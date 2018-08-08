@@ -1,0 +1,49 @@
+﻿@using KBookSearch.Models
+@using System.Text.RegularExpressions
+@model List<BookModel>
+@{
+    ViewBag.Title = "BookSearch";
+    string Verifiedcover = "";
+    int counter = 0;
+}
+
+<h2>BookSearch</h2>
+<div class="card-columns">
+    @foreach (var book in Model)
+    {
+        //Checks to make sure the URL exist to avoid an exception
+        if (book.CoverURL != null)
+        {
+            if (book.CoverURL.Thumbnail != null)
+            {
+                Verifiedcover = book.CoverURL.Thumbnail;
+            }
+        }
+        else
+        {
+            Verifiedcover = "/Content/Images/shruggie.jpg";
+        }
+
+      //The counter variable is used to give each book a unique class for the modal
+            <div class="card mb-3 w-70 bookcover">
+                <img id="" class="card-img-top" src="@Verifiedcover" alt="Card image cap" />
+                <div class="card-body">
+                    <h5 class="card-title">@book.Title</h5>
+                    <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target=".book@(counter)">Description</button>
+                    <button type="button" class="btn btn-secondary btn-block">Add to Library</button>
+                    <div class="modal fade bd-example-modal-lg book@(counter)" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content bookdescript">
+                                <h2>Description</h2>
+                                <p>@book.Description</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="card-text"><small class="text-muted">@book.Subtitle</small></p>
+                </div>
+            </div>
+
+            counter++;
+        }
+
+</div>
